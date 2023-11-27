@@ -1,84 +1,52 @@
-// create web server
-// node comments.js
+// Create web server
 
-var http = require('http');
-var url = require('url');
-var items = [];
+// 1. Import Express
+const express = require('express');
 
-var server = http.createServer(function(req, res) {
-	switch(req.method) {
-		case 'POST':
-			var item = '';
-			req.setEncoding('utf8');
-			req.on('data', function(chunk) {
-				item += chunk;
-			});
-			req.on('end', function() {
-				items.push(item);
-				res.end('OK\n');
-			});
-			break;
-		case 'GET':
-			var body = items.map(function(item, i) {
-				return i + ') ' + item;
-			}).join('\n');
-			res.setHeader('Content-Length', Buffer.byteLength(body));
-			res.setHeader('Content-Type', 'text/plain; charset="utf-8"');
-			res.end(body);
-			break;
-	}
+// 2. Create an express instance
+const app = express();
+
+// 3. Create a port
+const port = 3000;
+
+// 4. Create a route
+app.get('/', (req, res) => {
+    res.send('Hello World!')
 });
 
-server.listen(3000);
-
-// $ curl -d 'hello world' http://localhost:3000
-// OK
-// $ curl http://localhost:3000
-// 0) hello world
-// $ curl -d 'hello node' http://localhost:3000
-// OK
-// $ curl http://localhost:3000
-// 0) hello world
-// 1) hello node
-
-// Path: comments.js
-// create web server
-// node comments.js
-
-var http = require('http');
-var url = require('url');
-var items = [];
-
-var server = http.createServer(function(req, res) {
-	switch(req.method) {
-		case 'POST':
-			var item = '';
-			req.setEncoding('utf8');
-			req.on('data', function(chunk) {
-				item += chunk;
-			});
-			req.on('end', function() {
-				items.push(item);
-				res.end('OK\n');
-			});
-			break;
-		case 'GET':
-			items.forEach(function(item, i) {
-				res.write(i + ') ' + item + '\n');
-			});
-			res.end();
-			break;
-	}
+// 5. Listen to a port
+app.listen(port, () => {
+    console.log(`Example app listening at http://localhost:${port}`)
 });
 
-server.listen(3000);
+// 6. Create a route for comments
+app.get('/comments', (req, res) => {
+    res.send('This is comments page!')
+});
 
-// $ curl -d 'hello world' http://localhost:3000
-// OK
-// $ curl http://localhost:3000
-// 0) hello world
-// $ curl -d 'hello node' http://localhost:3000
-// OK
-// $ curl http://localhost:3000
-// 0) hello world
-// 1) hello node
+// 7. Create a route for a specific comment
+app.get('/comments/:id', (req, res) => {
+    res.send('This is comment number ' + req.params.id);
+});
+
+// 8. Create a route for a specific comment and specific comment body
+app.get('/comments/:id/:body', (req, res) => {
+    res.send('This is comment number ' + req.params.id + ' and comment body ' + req.params.body);
+});
+
+// 9. Create a route for a specific comment and specific comment body and specific comment author
+app.get('/comments/:id/:body/:author', (req, res) => {
+    res.send('This is comment number ' + req.params.id + ' and comment body ' + req.params.body + ' and comment author ' + req.params.author);
+});
+
+// 10. Create a route for a specific comment and specific comment body and specific comment author and specific comment date
+app.get('/comments/:id/:body/:author/:date', (req, res) => {
+    res.send('This is comment number ' + req.params.id + ' and comment body ' + req.params.body + ' and comment author ' + req.params.author + ' and comment date ' + req.params.date);
+});
+
+// 11. Create a route for a specific comment and specific comment body and specific comment author and specific comment date and specific comment time
+app.get('/comments/:id/:body/:author/:date/:time', (req, res) => {
+    res.send('This is comment number ' + req.params.id + ' and comment body ' + req.params.body + ' and comment author ' + req.params.author + ' and comment date ' + req.params.date + ' and comment time ' + req.params.time);
+});
+
+//
